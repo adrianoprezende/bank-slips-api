@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.RestClientException;
 
 import com.bankslips.constants.MessageCodesConstants;
 import com.bankslips.exception.AbstractException;
@@ -73,6 +75,27 @@ public class ExceptionControllerAdvice {
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<StandardOutput> exceptionHandler(HttpMessageNotReadableException ex) {
 		logger.error(ex.getMessage(), ex);
+		return getOutputForBadRequestNotFound();
+	}
+	
+	/**
+	 * Exception handler.
+	 *
+	 * @param ex the ex
+	 * @return the response entity
+	 */
+	@ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+	public ResponseEntity<StandardOutput> exceptionHandler(HttpMediaTypeNotSupportedException ex) {
+		logger.error(ex.getMessage(), ex);
+		return getOutputForBadRequestNotFound();
+	}
+
+	/**
+	 * Gets the output for bad request not found.
+	 *
+	 * @return the output for bad request not found
+	 */
+	private ResponseEntity<StandardOutput> getOutputForBadRequestNotFound() {
 		StandardOutput output = new StandardOutput();
 		output.setStatusCode(HttpStatus.BAD_REQUEST.value());
 		output.setMessage(messageUtils.getMessage(MessageCodesConstants.BANKSLIP_NOT_PROVIDED));

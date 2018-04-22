@@ -15,6 +15,12 @@ public class MessageInfo implements Serializable {
 
 	/** The message. */
 	private String message;
+	
+	/**
+	 * Instantiates a new message info.
+	 */
+	public MessageInfo() {
+	}
 
 	/**
 	 * Instantiates a new service message.

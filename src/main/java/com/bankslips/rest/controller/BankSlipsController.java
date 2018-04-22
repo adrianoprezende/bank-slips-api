@@ -55,7 +55,7 @@ public class BankSlipsController {
     }
 	
 	@GetMapping
-	public ResponseEntity<StandardOutput> get() throws BankslipBadRequestException, BankslipNotFoundException {
+	public ResponseEntity<StandardOutput> get(){
 		logger.info("Get all bank slips");
 		
 		StandardOutput output = new StandardOutput();
