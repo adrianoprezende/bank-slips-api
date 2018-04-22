@@ -1,6 +1,8 @@
 package com.bankslips.tests.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -16,20 +18,12 @@ import com.bankslips.enums.StatusEnum;
 import com.bankslips.exception.BankslipNotFoundException;
 import com.bankslips.main.SpringBootRestApiApp;
 import com.bankslips.rest.dto.BankSlipDTO;
-import com.bankslips.rest.validator.IBankslipValidator;
 import com.bankslips.service.IBankslipsService;
-import com.bankslips.service.IServiceMessage;
 import com.bankslips.utils.DateUtils;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SpringBootRestApiApp.class)
 public class BankslipsServiceTests {
-	
-	@Autowired
-	private IServiceMessage messageUtils;
-	
-	@Autowired
-	private IBankslipValidator validator;
 	
 	@Autowired
 	private IBankslipsService service;
@@ -131,6 +125,22 @@ public class BankslipsServiceTests {
 		assertNotNull(response.getFine());
 		
 		Integer fineResult = calculateHalfPercentFine(request);
+		
+		assertNotEquals(String.valueOf(fineResult), response.getFine());
+	}
+	
+	@Test
+	public void shouldNotApplyFineOfOnePercent() throws BankslipNotFoundException {
+		BankSlipDTO request = createExpiredBankslip_4days();
+		BankSlipDTO saveResponse = service.save(request);
+		assertNotNull(saveResponse);
+		assertNotNull(saveResponse.getId());
+		assertEquals(request.getTotalInCents(), saveResponse.getTotalInCents());
+		
+		BankSlipDTO response = service.find(saveResponse.getId());
+		assertNotNull(response.getFine());
+		
+		Integer fineResult = calculateOnePercentFine(request);
 		
 		assertNotEquals(String.valueOf(fineResult), response.getFine());
 	}
