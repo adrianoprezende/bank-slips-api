@@ -68,11 +68,13 @@ Response Example:
 
 # PUT
 http://localhost:8080/rest/bankslips/{id}/pay
+
 Pays the bankslip with the id passed as argument, chaging it's status to **PAID**.
 
 
 # DELETE
 http://localhost:8080/rest/bankslips/{id}/cancel
+
 Cancels the bankslips with the id passed as argument, changing it's status to **CANCELED**.
 
 
