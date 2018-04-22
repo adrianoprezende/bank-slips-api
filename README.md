@@ -20,7 +20,7 @@ http://localhost:8080/rest/bankslips
 
 Create a new bankslip
 
-Json body example:
+**Request example:**
 
     {
     	"due_date":"2018-01-01",
@@ -30,9 +30,11 @@ Json body example:
     }
 
 Expected possible status:
+
 **PENDING, PAID, CANCELED**
 
 Expected due_date format:
+
 **yyyy-MM-dd**
 
 # GET
@@ -47,10 +49,12 @@ Gets the bankslip with the id passed as argument, if exists.
 If the bank slip has expired, the fine is calculated.
 
 Fine rules:
+
 ● Until 10 days: Fine of 0,5% is applied.
+
 ● Above 10 days: Fine of 1% is applied.
 
-Response Example:
+**Response Example:**
 
     {
         "statusCode": 200,
